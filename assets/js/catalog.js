@@ -181,10 +181,24 @@
     return items.find((p) => p.slug === idOrSlug || p.id === idOrSlug) || null;
   }
 
+  /*
+   * Display name for a collection id. Uses COLLECTION_NAMES from config;
+   * unnamed live collections get stable "Category N" placeholders. Demo
+   * collections are already human names.
+   */
+  const labelRegistry = {};
+  function collectionLabel(id) {
+    const named = (window.GA_CONFIG.COLLECTION_NAMES || {})[id];
+    if (named) return named;
+    if (!/^pcol_/.test(id)) return id;
+    if (!(id in labelRegistry)) labelRegistry[id] = "Category " + (Object.keys(labelRegistry).length + 1);
+    return labelRegistry[id];
+  }
+
   function formatPrice(minor, currency) {
     const cur = currency || window.GA_CONFIG.CURRENCY || "USD";
     return new Intl.NumberFormat("en-US", { style: "currency", currency: cur }).format((minor || 0) / 100);
   }
 
-  window.GA_CATALOG = { getProducts, getProduct, formatPrice };
+  window.GA_CATALOG = { getProducts, getProduct, formatPrice, collectionLabel };
 })();

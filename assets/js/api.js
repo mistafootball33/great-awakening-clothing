@@ -80,7 +80,10 @@
       priceMinor,
       available: p.is_available !== false && p.purchasable !== false,
       variants,
-      collections: (p.product_collections || []).map((c) => c.title || c.name || "").filter(Boolean),
+      // The storefront API references collections by id only (no names).
+      collections: (p.product_collections || [])
+        .map((c) => c.collection_id || c.title || c.name || "")
+        .filter(Boolean),
       demo: false,
     };
   }

@@ -139,11 +139,12 @@
     const menuCats = collectionsOf(products);
 
     // Header nav: insert one link per category before the trailing item.
+    const label = window.GA_CATALOG.collectionLabel;
     document.querySelectorAll("[data-nav-categories]").forEach((ul) => {
       const end = ul.querySelector("[data-nav-end]");
       menuCats.slice(0, 6).forEach((c) => {
         const li = document.createElement("li");
-        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
+        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(label(c))}</a>`;
         ul.insertBefore(li, end);
       });
     });
@@ -153,7 +154,7 @@
     if (foot) {
       menuCats.forEach((c) => {
         const li = document.createElement("li");
-        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
+        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(label(c))}</a>`;
         foot.appendChild(li);
       });
     }
@@ -173,8 +174,8 @@
             const count = members.length;
             return `
               <a class="category-tile reveal" style="transition-delay:${i * 80}ms" href="${categoryUrl(c)}">
-                <img src="${img}" alt="${esc(c)}" loading="lazy" />
-                <span class="category-label">${esc(c)}<small>${count} ${count === 1 ? "piece" : "pieces"}</small></span>
+                <img src="${img}" alt="${esc(label(c))}" loading="lazy" />
+                <span class="category-label">${esc(label(c))}<small>${count} ${count === 1 ? "piece" : "pieces"}</small></span>
               </a>`;
           })
           .join("");
@@ -241,10 +242,11 @@
     let activeFilter = params.get("c") || "All";
     let sort = "featured";
 
+    const label = window.GA_CATALOG.collectionLabel;
     const collections = ["All", ...new Set(products.flatMap((p) => p.collections))];
     const chipsEl = document.querySelector("[data-filter-chips]");
     chipsEl.innerHTML = collections
-      .map((c) => `<button type="button" class="chip${c === activeFilter ? " is-active" : ""}" data-chip="${esc(c)}">${esc(c)}</button>`)
+      .map((c) => `<button type="button" class="chip${c === activeFilter ? " is-active" : ""}" data-chip="${esc(c)}">${esc(c === "All" ? "All" : label(c))}</button>`)
       .join("");
 
     const heading = document.querySelector("[data-shop-heading]");
@@ -252,12 +254,12 @@
 
     function apply() {
       let list = products.slice();
-      if (q) list = list.filter((p) => (p.title + " " + p.subtitle + " " + p.collections.join(" ")).toLowerCase().includes(q));
+      if (q) list = list.filter((p) => (p.title + " " + p.subtitle + " " + p.collections.map(label).join(" ")).toLowerCase().includes(q));
       if (activeFilter !== "All") list = list.filter((p) => p.collections.includes(activeFilter));
       if (sort === "price-asc") list.sort((a, b) => a.priceMinor - b.priceMinor);
       if (sort === "price-desc") list.sort((a, b) => b.priceMinor - a.priceMinor);
       if (sort === "name") list.sort((a, b) => a.title.localeCompare(b.title));
-      if (heading) heading.textContent = q ? `Results for “${q}”` : activeFilter === "All" ? "Shop all" : activeFilter;
+      if (heading) heading.textContent = q ? `Results for “${q}”` : activeFilter === "All" ? "Shop all" : label(activeFilter);
       if (countEl) countEl.textContent = `${list.length} ${list.length === 1 ? "piece" : "pieces"}`;
       if (!list.length) {
         document.querySelector("[data-grid-shop]").innerHTML =

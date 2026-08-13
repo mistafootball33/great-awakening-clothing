@@ -12,4 +12,15 @@ window.GA_CONFIG = {
   STORE_ID: "",
   CURRENCY: "USD",
   FREE_SHIPPING_THRESHOLD: 7500, // minor units (cents)
+  /*
+   * Category display names.
+   * The Hostinger storefront API identifies categories (collections) by id
+   * only — it does not expose the names you typed in the dashboard. The site
+   * detects every category automatically; add its display name here once:
+   *   "pcol_XXXXXXXXXXXXXXXXXXXXXXXXXX": "Hats",
+   * Unnamed categories appear as "Category 1", "Category 2", … until named.
+   */
+  COLLECTION_NAMES: {
+    // "pcol_01KZY1DJ72DPVXZB21MPZNGFRK": "Your category name",
+  },
 };
