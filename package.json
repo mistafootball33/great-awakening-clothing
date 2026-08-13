@@ -1,0 +1,10 @@
+{
+  "name": "great-awakening-clothing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Great Awakening Clothing Store — static storefront powered by the Hostinger Ecommerce API",
+  "scripts": {
+    "start": "npx serve . -l 8080",
+    "dev": "npx serve . -l 8080"
+  }
+}
