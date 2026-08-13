@@ -12,4 +12,7 @@ window.GA_CONFIG = {
   STORE_ID: "",
   CURRENCY: "USD",
   FREE_SHIPPING_THRESHOLD: 7500, // minor units (cents)
+  // Shown in the menu while the Hostinger store has no product collections;
+  // real collections replace these automatically once assigned in Hostinger.
+  FALLBACK_CATEGORIES: ["Hats & Snapbacks", "Tees", "Hoodies & Sweats", "Long Sleeves"],
 };

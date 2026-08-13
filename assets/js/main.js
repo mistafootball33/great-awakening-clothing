@@ -136,11 +136,13 @@
   async function initCategories() {
     const products = await window.GA_CATALOG.getProducts();
     const collections = collectionsOf(products);
+    // Menu falls back to the configured category list until the store has collections.
+    const menuCats = collections.length ? collections : window.GA_CONFIG.FALLBACK_CATEGORIES || [];
 
-    // Header nav: insert one link per collection before the trailing item.
+    // Header nav: insert one link per category before the trailing item.
     document.querySelectorAll("[data-nav-categories]").forEach((ul) => {
       const end = ul.querySelector("[data-nav-end]");
-      collections.slice(0, 6).forEach((c) => {
+      menuCats.slice(0, 6).forEach((c) => {
         const li = document.createElement("li");
         li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
         ul.insertBefore(li, end);
@@ -150,7 +152,7 @@
     // Footer shop column.
     const foot = document.querySelector("[data-footer-shop]");
     if (foot) {
-      collections.forEach((c) => {
+      menuCats.forEach((c) => {
         const li = document.createElement("li");
         li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
         foot.appendChild(li);
@@ -240,7 +242,11 @@
     let activeFilter = params.get("c") || "All";
     let sort = "featured";
 
-    const collections = ["All", ...new Set(products.flatMap((p) => p.collections))];
+    const storeCats = [...new Set(products.flatMap((p) => p.collections))];
+    const collections = [
+      "All",
+      ...(storeCats.length ? storeCats : window.GA_CONFIG.FALLBACK_CATEGORIES || []),
+    ];
     const chipsEl = document.querySelector("[data-filter-chips]");
     chipsEl.innerHTML = collections
       .map((c) => `<button type="button" class="chip${c === activeFilter ? " is-active" : ""}" data-chip="${esc(c)}">${esc(c)}</button>`)
@@ -258,6 +264,11 @@
       if (sort === "name") list.sort((a, b) => a.title.localeCompare(b.title));
       if (heading) heading.textContent = q ? `Results for “${q}”` : activeFilter === "All" ? "Shop all" : activeFilter;
       if (countEl) countEl.textContent = `${list.length} ${list.length === 1 ? "piece" : "pieces"}`;
+      if (!list.length) {
+        document.querySelector("[data-grid-shop]").innerHTML =
+          `<p class="shop-empty">Nothing in this category yet — new pieces are on the way. <a class="link-underline" href="shop.html">Shop everything</a></p>`;
+        return;
+      }
       renderGrid("[data-grid-shop]", list);
       bindQuickAdd(list);
       initReveals();

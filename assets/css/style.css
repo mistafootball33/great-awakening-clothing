@@ -1165,6 +1165,13 @@ body.cart-open {
   outline: none;
 }
 
+.shop-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 64px 0 32px;
+}
+
 /* ---------- Product page ---------- */
 
 .pdp {
