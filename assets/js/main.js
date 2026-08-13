@@ -118,6 +118,70 @@
     }
   }
 
+  /* ---- Dynamic categories (mirror the Hostinger store's collections) ---- */
+  function collectionsOf(products) {
+    const names = [];
+    products.forEach((p) =>
+      p.collections.forEach((c) => {
+        if (c && !names.includes(c)) names.push(c);
+      })
+    );
+    return names;
+  }
+
+  function categoryUrl(c) {
+    return "shop.html?c=" + encodeURIComponent(c);
+  }
+
+  async function initCategories() {
+    const products = await window.GA_CATALOG.getProducts();
+    const collections = collectionsOf(products);
+
+    // Header nav: insert one link per collection before the trailing item.
+    document.querySelectorAll("[data-nav-categories]").forEach((ul) => {
+      const end = ul.querySelector("[data-nav-end]");
+      collections.slice(0, 6).forEach((c) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
+        ul.insertBefore(li, end);
+      });
+    });
+
+    // Footer shop column.
+    const foot = document.querySelector("[data-footer-shop]");
+    if (foot) {
+      collections.forEach((c) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${categoryUrl(c)}">${esc(c)}</a>`;
+        foot.appendChild(li);
+      });
+    }
+
+    // Home category tiles: image = first product in the collection.
+    const tiles = document.querySelector("[data-category-tiles]");
+    if (tiles) {
+      if (!collections.length) {
+        const section = tiles.closest("section");
+        if (section) section.style.display = "none";
+      } else {
+        tiles.innerHTML = collections
+          .slice(0, 4)
+          .map((c, i) => {
+            const members = products.filter((p) => p.collections.includes(c));
+            const img = members[0] ? members[0].image : "";
+            const count = members.length;
+            return `
+              <a class="category-tile reveal" style="transition-delay:${i * 80}ms" href="${categoryUrl(c)}">
+                <img src="${img}" alt="${esc(c)}" loading="lazy" />
+                <span class="category-label">${esc(c)}<small>${count} ${count === 1 ? "piece" : "pieces"}</small></span>
+              </a>`;
+          })
+          .join("");
+        initReveals();
+      }
+    }
+  }
+
   /* ---- Product cards ---- */
   function productCard(p, delay) {
     const style = delay ? ` style="transition-delay:${delay}ms"` : "";
@@ -282,6 +346,7 @@
     injectDrawer();
     initHeader();
     initHero();
+    initCategories();
     const page = document.body.dataset.page;
     if (page === "home") initHome();
     else if (page === "shop") initShop();
