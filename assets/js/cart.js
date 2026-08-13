@@ -130,17 +130,29 @@
     if (!items.length) return;
     const btn = document.querySelector("[data-checkout]");
     if (window.GA_API.isLive()) {
+      // Demo-catalog lines (fallback mode leftovers) have no real variant ids.
+      const liveItems = items.filter((i) => String(i.variantId).startsWith("variant_"));
+      if (!liveItems.length) {
+        alert("The items in your bag are demo pieces. Please re-add products from the live catalog to check out.");
+        return;
+      }
       try {
         if (btn) {
           btn.disabled = true;
           btn.textContent = "Preparing checkout…";
         }
-        const payload = items.map((i) => ({ variant_id: i.variantId, quantity: i.qty }));
+        const payload = liveItems.map((i) => ({ variant_id: i.variantId, quantity: i.qty }));
         const res = await window.GA_API.createHostedCheckout(payload);
         window.location.href = res.url;
         return;
       } catch (err) {
-        alert("Checkout is unavailable right now. Please try again.\n\n" + err.message);
+        if (err.message.includes("payment_provider_not_configured")) {
+          alert(
+            "Almost there — this store hasn't finished payment setup yet.\nConnect a payment method in Hostinger (Ecommerce → Settings → Payments) to enable checkout."
+          );
+        } else {
+          alert("Checkout is unavailable right now. Please try again.\n\n" + err.message);
+        }
       } finally {
         if (btn) {
           btn.disabled = false;

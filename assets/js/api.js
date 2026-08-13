@@ -32,6 +32,12 @@
     return request(`/v2/channels/${cfg.SALES_CHANNEL_ID}/products/${encodeURIComponent(idOrSlug)}`);
   }
 
+  /* Variants (with prices) are served separately from the product list. */
+  async function fetchVariants({ limit = 100, offset = 0 } = {}) {
+    const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+    return request(`/v2/channels/${cfg.SALES_CHANNEL_ID}/variants?${qs}`);
+  }
+
   /*
    * Hosted checkout: create a cart from line items and get a redirect URL.
    * items: [{ variant_id, quantity }]
@@ -39,7 +45,11 @@
   async function createHostedCheckout(items) {
     return request(`/v2/channels/${cfg.SALES_CHANNEL_ID}/checkout`, {
       method: "POST",
-      body: JSON.stringify({ items }),
+      body: JSON.stringify({
+        items,
+        success_url: new URL("index.html?checkout=success", window.location.href).href,
+        cancel_url: window.location.href,
+      }),
     });
   }
 
@@ -94,5 +104,5 @@
     return price.amount ?? price.calculated_price ?? null;
   }
 
-  window.GA_API = { isLive, fetchProducts, fetchProduct, createHostedCheckout, normalizeProduct };
+  window.GA_API = { isLive, fetchProducts, fetchProduct, fetchVariants, createHostedCheckout, normalizeProduct };
 })();

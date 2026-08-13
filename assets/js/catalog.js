@@ -150,8 +150,20 @@
     if (cache) return cache;
     if (window.GA_API.isLive()) {
       try {
-        const res = await window.GA_API.fetchProducts({ limit: 100 });
-        const items = (res.data || []).map(window.GA_API.normalizeProduct).filter((p) => p.available);
+        // The product list returns variants/prices as null; join the variants endpoint.
+        const [res, vres] = await Promise.all([
+          window.GA_API.fetchProducts({ limit: 100 }),
+          window.GA_API.fetchVariants({ limit: 100 }),
+        ]);
+        const variantsByProduct = {};
+        (vres.data || []).forEach((v) => {
+          (variantsByProduct[v.product_id] = variantsByProduct[v.product_id] || []).push(v);
+        });
+        const items = (res.data || [])
+          .map((p) =>
+            window.GA_API.normalizeProduct({ ...p, variants: p.variants || variantsByProduct[p.id] || [] })
+          )
+          .filter((p) => p.available);
         if (items.length) {
           cache = items;
           return cache;
