@@ -135,9 +135,8 @@
 
   async function initCategories() {
     const products = await window.GA_CATALOG.getProducts();
-    const collections = collectionsOf(products);
-    // Menu falls back to the configured category list until the store has collections.
-    const menuCats = collections.length ? collections : window.GA_CONFIG.FALLBACK_CATEGORIES || [];
+    // Menu mirrors the sales channel's collections exactly.
+    const menuCats = collectionsOf(products);
 
     // Header nav: insert one link per category before the trailing item.
     document.querySelectorAll("[data-nav-categories]").forEach((ul) => {
@@ -162,11 +161,11 @@
     // Home category tiles: image = first product in the collection.
     const tiles = document.querySelector("[data-category-tiles]");
     if (tiles) {
-      if (!collections.length) {
+      if (!menuCats.length) {
         const section = tiles.closest("section");
         if (section) section.style.display = "none";
       } else {
-        tiles.innerHTML = collections
+        tiles.innerHTML = menuCats
           .slice(0, 4)
           .map((c, i) => {
             const members = products.filter((p) => p.collections.includes(c));
@@ -242,11 +241,7 @@
     let activeFilter = params.get("c") || "All";
     let sort = "featured";
 
-    const storeCats = [...new Set(products.flatMap((p) => p.collections))];
-    const collections = [
-      "All",
-      ...(storeCats.length ? storeCats : window.GA_CONFIG.FALLBACK_CATEGORIES || []),
-    ];
+    const collections = ["All", ...new Set(products.flatMap((p) => p.collections))];
     const chipsEl = document.querySelector("[data-filter-chips]");
     chipsEl.innerHTML = collections
       .map((c) => `<button type="button" class="chip${c === activeFilter ? " is-active" : ""}" data-chip="${esc(c)}">${esc(c)}</button>`)

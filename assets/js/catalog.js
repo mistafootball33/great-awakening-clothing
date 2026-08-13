@@ -164,12 +164,12 @@
             window.GA_API.normalizeProduct({ ...p, variants: p.variants || variantsByProduct[p.id] || [] })
           )
           .filter((p) => p.available);
-        if (items.length) {
-          cache = items;
-          return cache;
-        }
+        // Live mode shows ONLY the sales channel's products — never the demo set.
+        cache = items;
+        return cache;
       } catch (err) {
-        console.warn("Falling back to demo catalog:", err.message);
+        console.warn("Could not load the live catalog:", err.message);
+        return [];
       }
     }
     cache = DEMO_PRODUCTS;
