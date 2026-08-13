@@ -252,16 +252,38 @@ h3 {
 }
 
 .brand {
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: clamp(19px, 2vw, 24px);
-  letter-spacing: 0.04em;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  color: var(--ink);
   white-space: nowrap;
 }
 
-.brand .sun {
-  color: var(--amber);
+.ga-mark {
+  display: block;
+  height: 40px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  font-family: "Raleway", var(--font-text);
+  font-weight: 300;
+  font-size: clamp(15px, 1.6vw, 18px);
+  letter-spacing: 0.14em;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.brand-sub {
+  display: block;
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.46em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 4px;
 }
 
 .header-actions {
@@ -404,6 +426,24 @@ h3 {
   padding-bottom: clamp(64px, 9vh, 110px);
 }
 
+.hero-logo {
+  margin-bottom: 22px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.9s var(--ease-out) 0.2s, transform 0.9s var(--ease-out) 0.2s;
+}
+
+.hero-logo .ga-mark {
+  height: 78px;
+  color: #fff;
+  filter: drop-shadow(0 2px 18px rgba(15, 12, 8, 0.35));
+}
+
+.hero.is-ready .hero-logo {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .hero-eyebrow {
   font-size: 12px;
   letter-spacing: 0.26em;
@@ -464,6 +504,7 @@ h3 {
 }
 
 .hero.is-ready .hero-eyebrow,
+.hero.is-ready .hero-logo,
 .hero.is-ready .hero-sub,
 .hero.is-ready .hero-ctas {
   opacity: 1;
@@ -824,7 +865,11 @@ h3 {
   color: var(--ink-soft);
   font-size: 14px;
   max-width: 34ch;
-  margin: 14px 0 0;
+  margin: 16px 0 0;
+}
+
+.footer-brand .ga-mark {
+  height: 48px;
 }
 
 .footer-col h3 {
@@ -1308,6 +1353,7 @@ body.cart-open {
   }
   .reveal,
   .hero-eyebrow,
+  .hero-logo,
   .hero-sub,
   .hero-ctas {
     opacity: 1 !important;
