@@ -21,6 +21,6 @@ window.GA_CONFIG = {
    * Unnamed categories appear as "Category 1", "Category 2", … until named.
    */
   COLLECTION_NAMES: {
-    // "pcol_01KZY1DJ72DPVXZB21MPZNGFRK": "Your category name",
+    "pcol_01KZY1DJ72DPVXZB21MPZNGFRK": "ANCH LOOKS",
   },
 };
