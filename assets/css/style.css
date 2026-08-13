@@ -267,6 +267,18 @@ h3 {
   flex-shrink: 0;
 }
 
+.brand-logo {
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
+.brand-logo-full {
+  display: block;
+  width: 210px;
+  height: auto;
+}
+
 .brand-text {
   font-family: "Raleway", var(--font-text);
   font-weight: 300;
