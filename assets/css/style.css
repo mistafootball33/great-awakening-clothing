@@ -1042,7 +1042,7 @@ body.cart-open {
 /* ---------- Shop page ---------- */
 
 .shop-hero {
-  padding: clamp(40px, 6vw, 72px) 0 8px;
+  padding-block: clamp(40px, 6vw, 72px) 8px;
 }
 
 .shop-hero h1 {
@@ -1114,7 +1114,7 @@ body.cart-open {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: clamp(32px, 5vw, 72px);
-  padding: clamp(32px, 5vw, 64px) 0;
+  padding-block: clamp(32px, 5vw, 64px);
 }
 
 .pdp-main img {
