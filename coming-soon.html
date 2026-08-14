@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Great Awakening Clothing — Coming Soon</title>
+  <meta name="description" content="Great Awakening Clothing — bold faith apparel with statement 3D embroidery. The store opens soon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,480;9..144,560&family=Archivo:wght@400;500;600;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="assets/img/brand/favicon.png" />
+  <meta name="theme-color" content="#0d0b08" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: #0d0b08;
+      color: #f7f3ec;
+      font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+    }
+    video { object-fit: cover; width: 100%; height: 100%; }
+
+    /* Layer 2: the store's cinematic hero, looping behind the content */
+    .stage { position: fixed; inset: 0; }
+    .stage video { filter: brightness(0.55) saturate(1.05); transform: scale(1.02); }
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(13,11,8,0.15) 0%, rgba(13,11,8,0.72) 100%);
+    }
+
+    /* Layer 1: Higgsfield intro film, plays once on top */
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      background: #000;
+      transition: opacity 1.4s ease;
+    }
+    .intro.is-done { opacity: 0; pointer-events: none; }
+    .intro-skip {
+      position: absolute;
+      right: 26px;
+      bottom: 26px;
+      z-index: 11;
+      background: rgba(247,243,236,0.08);
+      border: 1px solid rgba(247,243,236,0.35);
+      color: rgba(247,243,236,0.85);
+      font: 600 11px/1 "Archivo", sans-serif;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 12px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.25s, color 0.25s;
+    }
+    .intro-skip:hover { background: rgba(247,243,236,0.92); color: #0d0b08; }
+
+    /* Content */
+    .content {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px 24px;
+      opacity: 0;
+      transition: opacity 1.6s ease 0.3s;
+    }
+    .content.is-in { opacity: 1; }
+
+    .cs-logo {
+      width: clamp(180px, 26vw, 300px);
+      filter: drop-shadow(0 4px 40px rgba(0,0,0,0.55));
+      opacity: 0;
+      transform: translateY(18px) scale(0.96);
+      transition: opacity 1.4s ease 0.5s, transform 1.4s cubic-bezier(0.16,1,0.3,1) 0.5s;
+    }
+    .content.is-in .cs-logo { opacity: 1; transform: none; }
+
+    .cs-line {
+      width: 1px;
+      height: 44px;
+      margin: 26px 0;
+      background: linear-gradient(to bottom, transparent, #d9a441, transparent);
+      opacity: 0;
+      transition: opacity 1.2s ease 1s;
+    }
+    .content.is-in .cs-line { opacity: 1; }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 480;
+      font-size: clamp(34px, 5.4vw, 64px);
+      letter-spacing: -0.01em;
+      margin: 0 0 14px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1.2s ease 1.15s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 1.15s;
+    }
+    .content.is-in h1 { opacity: 1; transform: none; }
+
+    .cs-sub {
+      max-width: 46ch;
+      margin: 0 0 34px;
+      font-size: clamp(14px, 1.5vw, 16.5px);
+      line-height: 1.7;
+      color: rgba(247,243,236,0.82);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1.2s ease 1.35s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 1.35s;
+    }
+    .content.is-in .cs-sub { opacity: 1; transform: none; }
+
+    .cs-form {
+      display: flex;
+      width: min(430px, 100%);
+      border: 1px solid rgba(247,243,236,0.35);
+      backdrop-filter: blur(8px);
+      background: rgba(13,11,8,0.35);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1.2s ease 1.55s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 1.55s;
+    }
+    .content.is-in .cs-form { opacity: 1; transform: none; }
+    .cs-form input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: 0;
+      padding: 16px 18px;
+      color: #f7f3ec;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+    .cs-form input::placeholder { color: rgba(247,243,236,0.5); }
+    .cs-form button {
+      border: 0;
+      background: #d9a441;
+      color: #0d0b08;
+      font: 700 12px/1 "Archivo", sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0 26px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .cs-form button:hover { background: #fff; }
+
+    .cs-note {
+      margin-top: 16px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: rgba(247,243,236,0.5);
+      opacity: 0;
+      transition: opacity 1.2s ease 1.8s;
+    }
+    .content.is-in .cs-note { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .intro { display: none; }
+      .content, .cs-logo, .cs-line, h1, .cs-sub, .cs-form, .cs-note {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .stage video { display: none; }
+      .stage { background: #0d0b08 url("assets/img/editorial/hero-fallback.jpg") center/cover; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Looping store hero behind everything -->
+  <div class="stage" aria-hidden="true">
+    <video muted loop playsinline preload="auto" poster="assets/img/editorial/hero-fallback.jpg" data-stage-video>
+      <source src="assets/video/hero.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <!-- Content -->
+  <main class="content" data-content>
+    <img class="cs-logo" src="assets/img/brand/logo-white.png" alt="Great Awakening Clothing LLC" />
+    <div class="cs-line" aria-hidden="true"></div>
+    <h1>Something is awakening.</h1>
+    <p class="cs-sub">Bold faith apparel, stitched heavy in thick 3D embroidery. The store opens soon — be first through the door.</p>
+    <form class="cs-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You’re on the list ✓';">
+      <input type="email" required placeholder="Email address" aria-label="Email address" />
+      <button type="submit">Notify me</button>
+    </form>
+    <p class="cs-note">Great Awakening Clothing LLC · Launching 2026</p>
+  </main>
+
+  <!-- Higgsfield intro film on top -->
+  <div class="intro" data-intro>
+    <video autoplay muted playsinline preload="auto" data-intro-video>
+      <source src="assets/video/intro.mp4" type="video/mp4" />
+    </video>
+    <button type="button" class="intro-skip" data-skip>Skip intro</button>
+  </div>
+
+  <script src="assets/js/config.js?v=20260815"></script>
+  <script>
+    (function () {
+      var intro = document.querySelector("[data-intro]");
+      var introVideo = document.querySelector("[data-intro-video]");
+      var stageVideo = document.querySelector("[data-stage-video]");
+      var content = document.querySelector("[data-content]");
+      var finished = false;
+
+      function reveal() {
+        if (finished) return;
+        finished = true;
+        stageVideo.play().catch(function () {});
+        intro.classList.add("is-done");
+        content.classList.add("is-in");
+        setTimeout(function () { intro.remove(); }, 1600);
+      }
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        reveal();
+      } else {
+        introVideo.addEventListener("ended", reveal);
+        document.querySelector("[data-skip]").addEventListener("click", reveal);
+        // If the intro can't autoplay or load, don't strand the visitor on black.
+        introVideo.play().catch(reveal);
+        introVideo.addEventListener("error", reveal, true);
+        setTimeout(function () { if (introVideo.currentTime === 0) reveal(); }, 3500);
+        setTimeout(reveal, 12000); // absolute failsafe
+      }
+    })();
+  </script>
+</body>
+</html>

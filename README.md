@@ -70,6 +70,17 @@ The site is an installable Progressive Web App: `manifest.webmanifest` + `sw.js`
 
 The app icon is generated from the official logo (`assets/img/brand/icon-*.png`). After changing site files, bump the `?v=` version stamp in the HTML and the `CACHE` name in `sw.js` so installed apps pick up the update.
 
+## Coming-soon mode
+
+Flip one line in [`assets/js/config.js`](assets/js/config.js):
+
+```js
+COMING_SOON: true,   // cinematic landing page instead of the store
+COMING_SOON: false,  // store is open
+```
+
+While it's on, every page redirects to `coming-soon.html` — a cinematic sequence (Higgsfield-generated logo-reveal film → the store's hero film looping behind the logo, headline and email signup). Add `?preview=1` to any URL to browse the real site during coming-soon mode (per browser session); `/admin.html` is never blocked. Commit + deploy after flipping the flag.
+
 ## Notes
 
 - Hero video autoplays muted, honors `prefers-reduced-motion`, and falls back to a poster image.
