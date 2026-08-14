@@ -774,9 +774,10 @@ h3 {
 
 .editorial-media img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .editorial-copy h2 {
