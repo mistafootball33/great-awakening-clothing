@@ -32,6 +32,11 @@
     return request(`/v2/channels/${cfg.SALES_CHANNEL_ID}/products/${encodeURIComponent(idOrSlug)}`);
   }
 
+  /* Store metadata: name, logo, currency, payment-setup status. */
+  async function fetchStoreMetadata() {
+    return request(`/v2/store/${cfg.STORE_ID}/metadata`);
+  }
+
   /* Variants (with prices) are served separately from the product list. */
   async function fetchVariants({ limit = 100, offset = 0 } = {}) {
     const qs = new URLSearchParams({ limit: String(limit), offset: String(offset) });
@@ -107,5 +112,5 @@
     return price.amount ?? price.calculated_price ?? null;
   }
 
-  window.GA_API = { isLive, fetchProducts, fetchProduct, fetchVariants, createHostedCheckout, normalizeProduct };
+  window.GA_API = { isLive, fetchProducts, fetchProduct, fetchVariants, fetchStoreMetadata, createHostedCheckout, normalizeProduct };
 })();

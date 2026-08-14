@@ -9,7 +9,7 @@
 window.GA_CONFIG = {
   API_BASE: "https://api-ecommerce.hostinger.com",
   SALES_CHANNEL_ID: "scha_01KZVBJ89CJYM2DET6Y61F4WRZ",
-  STORE_ID: "",
+  STORE_ID: "store_01KWT3TF7XPSQ1WCNVEF1YRGFC",
   CURRENCY: "USD",
   FREE_SHIPPING_THRESHOLD: 7500, // minor units (cents)
   /*

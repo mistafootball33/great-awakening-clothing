@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store Manager — Great Awakening Clothing</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,480;9..144,560;9..144,600&family=Archivo:wght@400;500;600;700&family=Raleway:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20260814" />
+  <link rel="icon" href="assets/img/brand/favicon.png" />
+  <style>
+    body { background: var(--ivory); }
+    .admin-wrap { max-width: 1180px; margin: 0 auto; padding: 28px clamp(20px, 4vw, 48px) 96px; }
+    .admin-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 8px 0 24px; border-bottom: 1px solid var(--hairline); margin-bottom: 32px; }
+    .admin-top .brand-logo { height: 72px; }
+    .admin-title { display: flex; align-items: center; gap: 18px; }
+    .admin-title h1 { font-size: clamp(24px, 3vw, 34px); }
+    .admin-title p { margin: 4px 0 0; font-size: 13px; color: var(--ink-soft); }
+    .admin-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .admin-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--ink); background: var(--ink); color: var(--ivory); cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .admin-btn:hover { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .admin-btn.ghost { background: transparent; color: var(--ink); }
+    .admin-btn.ghost:hover { background: var(--ink); color: var(--ivory); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 32px; }
+    .stat-card { background: var(--paper); border: 1px solid var(--hairline); padding: 18px 20px; }
+    .stat-card .stat-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 8px; }
+    .stat-card .stat-value { font-family: var(--font-display); font-size: 30px; line-height: 1; margin: 0; }
+    .stat-card .stat-sub { font-size: 12px; color: var(--ink-soft); margin: 6px 0 0; }
+    .stat-card.warn { border-color: var(--terracotta); }
+    .stat-card.warn .stat-value { color: var(--terracotta); font-size: 20px; padding-top: 5px; }
+    .stat-card.ok .stat-value { color: #2c7a3f; font-size: 20px; padding-top: 5px; }
+    .admin-section { margin-bottom: 40px; }
+    .admin-section > h2 { font-size: 22px; margin-bottom: 6px; }
+    .admin-section > .section-note { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; max-width: 70ch; }
+    .admin-toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .admin-toolbar input, .admin-toolbar select { border: 1px solid var(--hairline); background: var(--paper); font: inherit; font-size: 13.5px; padding: 9px 14px; color: var(--ink); outline: none; }
+    .admin-toolbar input { flex: 1; min-width: 220px; }
+    .admin-table-wrap { overflow-x: auto; background: var(--paper); border: 1px solid var(--hairline); }
+    table.admin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 720px; }
+    .admin-table th { text-align: left; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--hairline); }
+    .admin-table td { padding: 12px 14px; border-bottom: 1px solid var(--hairline); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: 0; }
+    .admin-table img { width: 46px; height: 56px; object-fit: cover; background: #efe9dd; }
+    .admin-table .p-title { font-weight: 600; }
+    .admin-table .p-sub { font-size: 12px; color: var(--ink-soft); }
+    .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
+    .badge.live { background: #e3f0e6; color: #2c7a3f; }
+    .badge.off { background: #f7e5dd; color: var(--terracotta); }
+    .badge.cat { background: var(--ivory); color: var(--ink-soft); border: 1px solid var(--hairline); font-weight: 600; text-transform: none; letter-spacing: 0.02em; margin: 2px 4px 2px 0; }
+    .checklist { display: grid; gap: 10px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; background: var(--paper); border: 1px solid var(--hairline); padding: 14px 16px; }
+    .check-item .mark { font-size: 16px; line-height: 1.3; }
+    .check-item.done .mark { color: #2c7a3f; }
+    .check-item.todo .mark { color: var(--terracotta); }
+    .check-item p { margin: 0; font-size: 13.5px; }
+    .check-item .hint { color: var(--ink-soft); font-size: 12.5px; margin-top: 2px; }
+    .check-item a { color: var(--gold); border-bottom: 1px solid var(--gold); }
+    .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .link-card { background: var(--paper); border: 1px solid var(--hairline); padding: 18px; display: block; transition: border-color 0.2s, transform 0.2s; }
+    .link-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .link-card h3 { font-family: var(--font-text); font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .link-card p { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+    .link-card .ext { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-top: 10px; }
+    .admin-foot { font-size: 12px; color: var(--ink-soft); border-top: 1px solid var(--hairline); padding-top: 18px; }
+    .cat-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--paper); border: 1px solid var(--hairline); padding: 13px 16px; margin-bottom: 8px; flex-wrap: wrap; }
+    .cat-row .cat-name { font-weight: 600; font-size: 14px; }
+    .cat-row .cat-id { font-size: 11.5px; color: var(--ink-soft); font-family: ui-monospace, monospace; }
+    .cat-row .cat-warning { color: var(--terracotta); font-size: 12.5px; }
+    .loading-note { color: var(--ink-soft); font-size: 14px; padding: 30px 0; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <div class="admin-title">
+        <img class="brand-logo" src="assets/img/brand/logo-mark.png" alt="Great Awakening Clothing LLC" />
+        <div>
+          <h1>Store Manager</h1>
+          <p>Live view of the Hostinger store · sales channel <span data-channel-id style="font-family:ui-monospace,monospace"></span></p>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <button type="button" class="admin-btn ghost" data-refresh>↻ Refresh data</button>
+        <a class="admin-btn" href="https://hpanel.hostinger.com/websites" target="_blank" rel="noopener">Open Hostinger Panel</a>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid" data-stats>
+      <div class="stat-card"><p class="stat-label">Products</p><p class="stat-value" data-stat-products>–</p><p class="stat-sub" data-stat-products-sub></p></div>
+      <div class="stat-card"><p class="stat-label">Categories</p><p class="stat-value" data-stat-categories>–</p><p class="stat-sub" data-stat-categories-sub></p></div>
+      <div class="stat-card"><p class="stat-label">Catalog value</p><p class="stat-value" data-stat-value>–</p><p class="stat-sub">sum of listed prices</p></div>
+      <div class="stat-card" data-card-payments><p class="stat-label">Payments</p><p class="stat-value" data-stat-payments>–</p><p class="stat-sub" data-stat-payments-sub></p></div>
+      <div class="stat-card" data-card-stock><p class="stat-label">Inventory</p><p class="stat-value" data-stat-stock>–</p><p class="stat-sub" data-stat-stock-sub></p></div>
+    </div>
+
+    <!-- Setup checklist -->
+    <section class="admin-section">
+      <h2>Launch checklist</h2>
+      <p class="section-note">What's standing between the store and its first sale.</p>
+      <div class="checklist" data-checklist></div>
+    </section>
+
+    <!-- Catalog -->
+    <section class="admin-section">
+      <h2>Catalog</h2>
+      <p class="section-note">Everything currently published to this sales channel, straight from the Hostinger API.</p>
+      <div class="admin-toolbar">
+        <input type="search" placeholder="Search products…" data-admin-search />
+        <select data-admin-sort>
+          <option value="title">Sort: Name A–Z</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="stock">Stock: low first</option>
+        </select>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th></th><th>Product</th><th>Categories</th><th>Price</th><th>Stock</th><th>Status</th></tr>
+          </thead>
+          <tbody data-admin-rows><tr><td colspan="6"><p class="loading-note">Loading live catalog…</p></td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="admin-section">
+      <h2>Categories</h2>
+      <p class="section-note">Categories sync automatically from Hostinger. The API sends only their ids, so each new category needs its display name added once in <code>assets/js/config.js → COLLECTION_NAMES</code>.</p>
+      <div data-admin-categories></div>
+    </section>
+
+    <!-- Manage -->
+    <section class="admin-section">
+      <h2>Manage the store</h2>
+      <p class="section-note">Adding products, orders &amp; sales, payments, and shipping live in Hostinger's secure dashboard — the public storefront API is read-only, so those actions open the panel in a new tab.</p>
+      <div class="link-grid">
+        <a class="link-card" href="https://hpanel.hostinger.com/websites" target="_blank" rel="noopener">
+          <h3>Add / edit products</h3><p>Create products, set prices, photos, variants and categories.</p><span class="ext">Hostinger panel ↗</span>
+        </a>
+        <a class="link-card" href="https://hpanel.hostinger.com/websites" target="_blank" rel="noopener">
+          <h3>Orders &amp; sales</h3><p>See orders, revenue and customers as they come in.</p><span class="ext">Hostinger panel ↗</span>
+        </a>
+        <a class="link-card" href="https://hpanel.hostinger.com/websites" target="_blank" rel="noopener">
+          <h3>Payments</h3><p>Connect a payment provider so checkout can go live.</p><span class="ext">Hostinger panel ↗</span>
+        </a>
+        <a class="link-card" href="https://hpanel.hostinger.com/websites" target="_blank" rel="noopener">
+          <h3>Shipping &amp; delivery</h3><p>Set shipping zones, rates and pickup options.</p><span class="ext">Hostinger panel ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="admin-foot">This dashboard reads the public storefront API only — it can't change the store and shows no customer data, so it's safe to host with the site. Management actions require signing in to Hostinger. <a class="link-underline" href="index.html">← Back to the shop</a></p>
+  </div>
+
+  <script src="assets/js/config.js?v=20260814"></script>
+  <script src="assets/js/api.js?v=20260814"></script>
+  <script src="assets/js/catalog.js?v=20260814"></script>
+  <script src="assets/js/admin.js?v=20260814"></script>
+</body>
+</html>
