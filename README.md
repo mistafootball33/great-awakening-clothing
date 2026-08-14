@@ -60,6 +60,16 @@ Serves the site at http://localhost:8080 (uses `npx serve`, no install required)
 └── package.json
 ```
 
+## The app (PWA)
+
+The site is an installable Progressive Web App: `manifest.webmanifest` + `sw.js` (offline caching) + `assets/js/pwa.js` (animated install banner). Shoppers on phones see an install invitation automatically; there's also a "📱 Get the app" link in the footer.
+
+**iPhone / iPad (Safari):** open the site → tap Share (the square with the up arrow) → "Add to Home Screen" → Add.
+
+**Android (Chrome):** open the site → tap Install in the banner, or ⋮ menu → "Add to Home screen" / "Install app".
+
+The app icon is generated from the official logo (`assets/img/brand/icon-*.png`). After changing site files, bump the `?v=` version stamp in the HTML and the `CACHE` name in `sw.js` so installed apps pick up the update.
+
 ## Notes
 
 - Hero video autoplays muted, honors `prefers-reduced-motion`, and falls back to a poster image.

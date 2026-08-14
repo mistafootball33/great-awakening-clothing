@@ -1286,6 +1286,226 @@ body.cart-open {
   padding: 80px 0;
 }
 
+/* ---------- App install banner ---------- */
+
+.app-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 80;
+  width: min(560px, calc(100vw - 24px));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ink);
+  color: var(--ivory);
+  padding: 14px 16px;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(26, 23, 18, 0.35);
+  transform: translate(-50%, calc(100% + 40px));
+  transition: transform 0.7s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+.app-banner.is-up {
+  transform: translate(-50%, 0);
+  animation: banner-float 5s ease-in-out 1s infinite;
+}
+
+@keyframes banner-float {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -6px); }
+}
+
+.app-banner-ring {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  overflow: visible;
+}
+
+.app-banner-ring img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.app-banner-ring::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 18px;
+  background: conic-gradient(from 0deg, var(--amber), transparent 30%, var(--amber) 55%, transparent 80%, var(--amber));
+  animation: ring-spin 3.2s linear infinite;
+}
+
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-banner-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-banner-title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.app-banner-sub {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: rgba(247, 243, 236, 0.72);
+  line-height: 1.4;
+}
+
+.app-banner-cta {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--amber);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 11px 18px;
+  border-radius: 999px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.app-banner-cta:hover {
+  background: #fff;
+  transform: scale(1.04);
+}
+
+.app-banner-cta::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  animation: cta-shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes cta-shimmer {
+  0%, 55% { left: -60%; }
+  85%, 100% { left: 130%; }
+}
+
+.app-banner-close {
+  flex-shrink: 0;
+  background: none;
+  border: 0;
+  color: rgba(247, 243, 236, 0.6);
+  font-size: 22px;
+  line-height: 1;
+  padding: 4px 6px;
+  transition: color 0.2s;
+}
+
+.app-banner-close:hover {
+  color: #fff;
+}
+
+/* Install instructions modal */
+
+.app-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(15, 12, 8, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.app-modal.is-open {
+  opacity: 1;
+}
+
+.app-modal-card {
+  position: relative;
+  width: min(430px, 100%);
+  background: var(--ivory);
+  padding: 34px 30px 28px;
+  text-align: center;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.4s var(--ease-out);
+  max-height: 86vh;
+  overflow-y: auto;
+}
+
+.app-modal.is-open .app-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.app-modal-card .cart-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+}
+
+.app-modal-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  margin: 0 auto 16px;
+  box-shadow: 0 10px 30px rgba(26, 23, 18, 0.18);
+  animation: icon-pop 0.6s cubic-bezier(0.22, 1.6, 0.36, 1) 0.15s backwards;
+}
+
+@keyframes icon-pop {
+  from { transform: scale(0.4); opacity: 0; }
+}
+
+.app-modal-card h2 {
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.app-steps {
+  text-align: left;
+  margin: 0;
+  padding: 0 0 0 22px;
+  display: grid;
+  gap: 12px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.app-steps strong {
+  color: var(--ink);
+}
+
+.app-key {
+  display: inline-block;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 0 7px;
+  font-size: 13px;
+}
+
+.app-modal-note {
+  margin: 20px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
 /* ---------- Reveal animation ---------- */
 
 .reveal {
