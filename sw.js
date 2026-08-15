@@ -2,7 +2,7 @@
    Pages: network-first (fresh content, cached fallback offline).
    Static assets: stale-while-revalidate. API: network-first with cached fallback.
    Video is left to the browser (range requests don't cache cleanly). */
-const CACHE = "ga-store-v1";
+const CACHE = "ga-store-v2";
 
 self.addEventListener("install", (e) => {
   e.waitUntil(
@@ -26,8 +26,12 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(req.url);
   if (url.pathname.endsWith(".mp4")) return; // range requests — let the network handle video
 
-  // API + page navigations: network first, fall back to cache when offline.
-  const networkFirst = url.hostname.endsWith("hostinger.com") || req.mode === "navigate";
+  // API, page navigations, and config.js (carries the coming-soon toggle):
+  // network first, fall back to cache when offline.
+  const networkFirst =
+    url.hostname.endsWith("hostinger.com") ||
+    req.mode === "navigate" ||
+    url.pathname.endsWith("/assets/js/config.js");
 
   e.respondWith(
     networkFirst
