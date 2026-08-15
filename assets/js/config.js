@@ -14,7 +14,7 @@ window.GA_CONFIG = {
    * only), e.g. yoursite.com/index.html?preview=1. The /admin.html
    * dashboard is never blocked.
    */
-  COMING_SOON: true,
+  COMING_SOON: false,
 
   API_BASE: "https://api-ecommerce.hostinger.com",
   SALES_CHANNEL_ID: "scha_01KZVBJ89CJYM2DET6Y61F4WRZ",
